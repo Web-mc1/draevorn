@@ -1,1 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Draevorn — a small Minecraft 26.3 SMP</title>
+<meta name="description" content="Draevorn is a small whitelisted Minecraft 26.3 survival server running Horizon with a 70-mod Java pack. EU, invite-sized, no griefing.">
+<meta property="og:title" content="Draevorn — a small Minecraft 26.3 SMP">
+<meta property="og:description" content="Whitelisted survival on Horizon. 70 mods. No griefing, no resets without a vote.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --stone-900: #0b0a0d;
+    --stone-800: #121016;
+    --stone-700: #1a1720;
+    --stone-600: #241f2b;
+    --line: #2e2836;
+    --ink: #ece7f0;
+    --ink-dim: #a79fb3;
+    --ink-faint: #776f84;
+    --ember: #d7a457;
+    --ember-soft: #b8863f;
+    --moss: #8ba06a;
+    --max: 1080px;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--stone-900);
+    color: var(--ink);
+    font: 400 16px/1.65 "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(900px 520px at 50% -8%, rgba(215, 164, 87, .16), transparent 70%),
+      radial-gradient(700px 500px at 88% 12%, rgba(139, 160, 106, .09), transparent 65%);
+    z-index: 0;
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(12px);
+    background: rgba(11, 10, 13, .78);
+    border-bottom: 1px solid rgba(46, 40, 54, .8);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    height: 66px;
+  }
+
+  .brand {
+    font-family: "Cinzel", Georgia, serif;
+    font-weight: 700;
+    letter-spacing: .16em;
+    font-size: 17px;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .brand span { color: var(--ember); }
+
+  .nav-links {
+    display: flex;
+    gap: 22px;
+    margin-left: auto;
+    font-size: 14px;
+  }
+
+  .nav-links a {
+    color: var(--ink-dim);
+    text-decoration: none;
+    transition: color .18s ease;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: transform .16s ease, background .18s ease, border-color .18s ease;
+    white-space: nowrap;
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+
+  .btn-primary {
+    background: linear-gradient(180deg, var(--ember), var(--ember-soft));
+    color: #1b1408;
+    box-shadow: 0 8px 24px -12px rgba(215, 164, 87, .8);
+  }
+
+  .btn-ghost {
+    border-color: var(--line);
+    color: var(--ink);
+    background: rgba(36, 31, 43, .5);
+  }
+
+  .btn-ghost:hover { border-color: #453b52; }
+
+  .nav .btn { padding: 9px 16px; }
+
+  .hero {
+    padding: 104px 0 76px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 15px;
+    background: rgba(26, 23, 32, .6);
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--moss);
+    box-shadow: 0 0 0 3px rgba(139, 160, 106, .18);
+  }
+
+  h1 {
+    font-family: "Cinzel", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(52px, 11vw, 118px);
+    line-height: .96;
+    letter-spacing: .06em;
+    margin: 26px 0 0;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #fdf8ef 8%, #d7a457 62%, #8a6a33 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero p.lede {
+    max-width: 620px;
+    margin: 22px auto 0;
+    color: var(--ink-dim);
+    font-size: 18px;
+  }
+
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 34px;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+    margin-top: 40px;
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+
+  .meta b { color: var(--ink); font-weight: 600; }
+
+  section { padding: 62px 0; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 16px;
+  }
+
+  .section-head h2 {
+    font-family: "Cinzel", Georgia, serif;
+    font-size: clamp(22px, 3.4vw, 30px);
+    font-weight: 600;
+    letter-spacing: .05em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .section-head span {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: linear-gradient(180deg, var(--stone-700), var(--stone-800));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    letter-spacing: .02em;
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--ink-dim);
+    font-size: 14.5px;
+  }
+
+  .glyph {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 18px;
+    background: rgba(215, 164, 87, .1);
+    border: 1px solid rgba(215, 164, 87, .22);
+    color: var(--ember);
+  }
+
+  .specs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--stone-800);
+  }
+
+  .spec {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    font-size: 14.5px;
+    margin: 0;
+  }
+
+  .spec dt { color: var(--ink-faint); margin: 0; }
+
+  .spec dd {
+    margin: 0;
+    text-align: right;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .steps {
+    counter-reset: step;
+    display: grid;
+    gap: 14px;
+  }
+
+  .step {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 18px;
+    align-items: start;
+    padding: 20px 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--stone-800);
+  }
+
+  .step::before {
+    content: counter(step);
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 18px;
+    color: var(--ember);
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(215, 164, 87, .28);
+    background: rgba(215, 164, 87, .07);
+  }
+
+  .step h3 { margin: 2px 0 4px; font-size: 15.5px; }
+
+  .step p { margin: 0; color: var(--ink-dim); font-size: 14.5px; }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .9em;
+    background: rgba(215, 164, 87, .1);
+    border: 1px solid rgba(215, 164, 87, .18);
+    color: #f0d3a2;
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .tag {
+    font-size: 13px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--stone-700);
+    color: var(--ink-dim);
+  }
+
+  details {
+    border-bottom: 1px solid var(--line);
+    padding: 16px 0;
+  }
+
+  summary {
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 15.5px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  summary::before {
+    content: "+";
+    color: var(--ember);
+    font-size: 18px;
+    line-height: 1;
+    width: 16px;
+  }
+
+  details[open] summary::before { content: "–"; }
+
+  details p {
+    margin: 10px 0 0 28px;
+    color: var(--ink-dim);
+    font-size: 14.5px;
+  }
+
+  .band {
+    text-align: center;
+    padding: 66px 32px;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(600px 260px at 50% 0%, rgba(215, 164, 87, .14), transparent 70%),
+      linear-gradient(180deg, var(--stone-700), var(--stone-900));
+  }
+
+  .band h2 {
+    font-family: "Cinzel", Georgia, serif;
+    font-size: clamp(24px, 4vw, 34px);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+  }
+
+  .band p {
+    color: var(--ink-dim);
+    max-width: 480px;
+    margin: 0 auto 26px;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    margin-top: 40px;
+    padding: 34px 0 54px;
+    color: var(--ink-faint);
+    font-size: 13px;
+  }
+
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 26px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .foot a { color: var(--ink-dim); text-decoration: none; }
+  .foot a:hover { color: var(--ink); }
+
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .hero { padding: 72px 0 54px; }
+    .section-head span { display: none; }
+    h1 { letter-spacing: .04em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav wrap">
+    <a class="brand" href="#top">Drae<span>vorn</span></a>
+    <div class="nav-links">
+      <a href="#server">The server</a>
+      <a href="#mods">Mods</a>
+      <a href="#join">How to join</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-primary" href="https://discord.gg/your-invite">Join the Discord</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow"><span class="dot"></span> Minecraft 26.3 · Horizon · whitelisted</div>
+      <h1>Draevorn</h1>
+      <p class="lede">
+        A small survival server for people who like finishing builds more than racing for gear.
+        70 Java mods, one world, no resets unless the server votes for one.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://discord.gg/your-invite">Join the Discord</a>
+        <a class="btn btn-ghost" href="#join">How to join</a>
+      </div>
+      <div class="meta">
+        <span><b>EU</b> hosted</span>
+        <span><b>70</b> content mods</span>
+        <span><b>Whitelisted</b></span>
+        <span>26.3 on <b>Horizon</b></span>
+      </div>
+    </div>
+  </div>
+
+  <section id="server" class="wrap">
+    <div class="section-head">
+      <h2>The server</h2>
+      <span>what you're signing up for</span>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <div class="glyph">⛏</div>
+        <h3>Vanilla-shaped survival</h3>
+        <p>No shops selling power, no ranks, no economy plugin. Just the world, the mods, and whoever's online.</p>
+      </article>
+      <article class="card">
+        <div class="glyph">✦</div>
+        <h3>70 mods, hand-picked</h3>
+        <p>Storage, farming, building, magic and maps. Everything you need to enjoy it, nothing that plays for you.</p>
+      </article>
+      <article class="card">
+        <div class="glyph">◈</div>
+        <h3>Small on purpose</h3>
+        <p>Invite-sized, so your base stays yours and the chat stays readable. The whitelist keeps it that way.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="specs" class="wrap">
+    <div class="section-head">
+      <h2>Specs</h2>
+      <span>updated 2026-11</span>
+    </div>
+    <div class="specs">
+      <dl class="spec"><dt>Game version</dt><dd>Minecraft 26.3</dd></dl>
+      <dl class="spec"><dt>Client</dt><dd>Horizon (java-bridge fork)</dd></dl>
+      <dl class="spec"><dt>Mod loader</dt><dd>Fabric, bridged at runtime</dd></dl>
+      <dl class="spec"><dt>Java</dt><dd>OpenJDK 25</dd></dl>
+      <dl class="spec"><dt>Region</dt><dd>Europe</dd></dl>
+      <dl class="spec"><dt>Access</dt><dd>Whitelist via Discord</dd></dl>
+      <dl class="spec"><dt>Resets</dt><dd>Only by server vote</dd></dl>
+      <dl class="spec"><dt>Address</dt><dd><code>play.draevorn.gg</code></dd></dl>
+    </div>
+  </section>
+
+  <section id="mods" class="wrap">
+    <div class="section-head">
+      <h2>The pack</h2>
+      <span>full list in #modlist</span>
+    </div>
+    <p style="color:var(--ink-dim); max-width:640px; margin:0 0 20px;">
+      Roughly seventy content mods, kept to what a build-focused server actually uses. Veinminer, minimaps
+      and quality-of-life are in; x-ray and auto-clickers are out.
+    </p>
+    <div class="tags">
+      <span class="tag">Building &amp; decoration</span>
+      <span class="tag">Storage networks</span>
+      <span class="tag">Farming &amp; cooking</span>
+      <span class="tag">Magic &amp; spells</span>
+      <span class="tag">Maps &amp; waypoints</span>
+      <span class="tag">Utility &amp; QoL</span>
+      <span class="tag">Veinminer</span>
+      <span class="tag">Right-click harvest</span>
+      <span class="tag">Seasons</span>
+    </div>
+  </section>
+
+  <section id="join" class="wrap">
+    <div class="section-head">
+      <h2>How to join</h2>
+      <span>four steps, no application essay</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div>
+          <h3>Join the Discord</h3>
+          <p>Accept the rules on the way in — that's the whole verification.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Post your Minecraft name in <code>#whitelist</code></h3>
+          <p>One line is enough. Staff add you, usually the same day.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Install the pack from <code>#modlist</code></h3>
+          <p>Every jar is listed with the version the server runs. Drop them in your mods folder.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Connect to <code>play.draevorn.gg</code></h3>
+          <p>Bring a friend if you like — the whitelist is a filter, not a gate.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="wrap">
+    <div class="section-head">
+      <h2>FAQ</h2>
+      <span>the four questions everyone asks</span>
+    </div>
+    <details>
+      <summary>Do I need Horizon, or can I join with the normal client?</summary>
+      <p>Horizon is what we run, and it's the client the world is tested on. A stock 26.3 client with the same
+        Fabric mods usually works, but the server's settings target Horizon.</p>
+    </details>
+    <details>
+      <summary>Is there a store or pay-to-win?</summary>
+      <p>No store, no ranks, no kits. Nobody can buy power here.</p>
+    </details>
+    <details>
+      <summary>Will the world reset when the game updates?</summary>
+      <p>Only if the server votes for it. Updates that can be applied in place get applied in place.</p>
+    </details>
+    <details>
+      <summary>Can I bring my own mods?</summary>
+      <p>Client-side QoL is fine — maps, shaders, HUD tweaks. Anything that changes blocks, items or recipes has
+        to match the server's pack, so check <code>#modlist</code> first.</p>
+    </details>
+  </section>
+
+  <section class="wrap">
+    <div class="band">
+      <h2>Come build something</h2>
+      <p>The world is up and the whitelist is open. All you need is the Discord and a mods folder.</p>
+      <a class="btn btn-primary" href="https://discord.gg/your-invite">Join the Discord</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <strong style="color:var(--ink); font-family:'Cinzel',Georgia,serif; letter-spacing:.14em;">DRAEVORN</strong>
+      &nbsp;·&nbsp; <code>play.draevorn.gg</code>
+    </div>
+    <div>
+      Not affiliated with Mojang or Microsoft. <a href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
 
